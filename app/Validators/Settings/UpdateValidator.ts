@@ -42,7 +42,9 @@ export default class UpdateValidator {
    *
    */
   public messages: CustomMessages = {
+    'name.required': 'Veuillez renseigner le nom du site.',
     'name.maxLength': 'Le nom ne doit pas contenir plus de 255 caractères.',
+    'symbol.required': 'Veuillez renseigner le symbol de la crypto-monnaie.',
     'symbol.maxLength':
       'Le symbol de la crypto-monnaie ne doit pas contenir plus de 255 caractères.',
   }

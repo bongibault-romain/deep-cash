@@ -60,6 +60,7 @@ export default class UpdateValidator {
    *
    */
   public messages: CustomMessages = {
+    'username.required': "Veuillez renseigner un nom d'utilisateur.",
     'username.maxLength': "Votre nom d'utilisateur ne doit pas contenir plus de 30 caractères.",
     'username.minLength': "Votre nom d'utilisateur doit pas contenir au moins 3 caractères.",
     'username.unique': "Ce nom d'utilisateur est déjà pris.",

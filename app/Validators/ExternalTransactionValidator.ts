@@ -40,7 +40,9 @@ export default class ExternalTransactionValidator {
    *
    */
   public messages: CustomMessages = {
+    'phone.required': 'Veuillez renseigner un numéro de téléphone.',
     'phone.maxLength': 'Votre numéro de téléphone ne doit pas contenir plus de 30 caractères.',
+    'amount.required': 'Veuillez renseigner un montant',
     'amount.range': 'Le montant doit être compris entre 1 et 10,000,000,000.',
   }
 }

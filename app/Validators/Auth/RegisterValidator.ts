@@ -51,9 +51,11 @@ export default class RegisterValidator {
    *
    */
   public messages: CustomMessages = {
+    'username.required': "Veuillez renseigner un nom d'utilisateur.",
     'username.maxLength': "Votre nom d'utilisateur ne doit pas contenir plus de 30 caractères.",
     'username.minLength': "Votre nom d'utilisateur doit pas contenir au moins 3 caractères.",
     'username.unique': "Ce nom d'utilisateur est déjà pris.",
+    'password.required': 'Veuillez renseigner un mot de passe.',
     'password.maxLength': 'Votre mot de passe ne doit pas contenir plus de 30 caractères.',
     'password.minLength': 'Votre mot de passe doit contenir au moins 8 caractères.',
     'password.confirmed': 'Les deux mots de passe ne sont pas identiques.',

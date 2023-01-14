@@ -45,7 +45,9 @@ export default class SendValidator {
    *
    */
   public messages: CustomMessages = {
+    'target.required': 'Veuillez renseigner une cible.',
     'target.exists': 'Adresse inconnue.',
+    'amount.required': 'Veuillez renseigner un montant.',
     'amount.range': 'Le montant doit être compris entre 1 et  10,000,000,000.',
   }
 }
