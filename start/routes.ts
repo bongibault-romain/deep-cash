@@ -19,10 +19,19 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import Setting from 'App/Models/Setting'
 
 Route.get('/', async ({ response }) => {
   return response.redirect().toRoute('auth.login.show')
 }).as('home')
+
+Route.get('/chat', async ({ response, view }) => {
+  let settings = await Setting.query().orderBy('created_at', 'desc').first()
+
+  if (!settings || !settings.isChatEnabled) return response.redirect().toRoute('home')
+
+  return view.render('chat')
+}).as('chat')
 
 Route.group(() => {
   Route.get('transactions', 'Admin/ExternalTransactionsController.show').as('transactions.show')

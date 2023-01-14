@@ -20,6 +20,9 @@
       @if(settings.isHistoryEnabled)
       <li><a href="{{ route('histories.show') }}">/historique</a></li>
       @endif
+      @if(settings.isChatEnabled)
+      <li><a href="{{ route('chat') }}">/tchat</a></li>
+      @endif
       <li><a href="{{ route('account.show') }}">/compte</a></li>
       @if(auth.user.isAdmin || auth.user.isOwner)
       <li><a href="{{ route('admin.users.show') }}">/admin</a></li>
