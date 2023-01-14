@@ -1,0 +1,101 @@
+@layout('layouts/admin')
+
+@section('body')
+  <h1 class="center">Gestion des utilisateurs</h1>
+
+<table class="center">
+  <tr>
+    <th>Nom d'utilisateur</th>
+    <th>Adresse</th>
+    <th>Solde</th>
+    <th>Rang</th>
+    <th>Actions</th>
+  </tr>
+@each(user in users)
+  <tr>
+    <td>{{user.username}}</td>
+    <td>{{user.transferKey}}</td>
+    <td>
+      <form method="post" action="{{ route('admin.users.update') }}" style="display: flex;align-items: center;margin:auto;justify-content:center;">
+        {{ csrfField() }}
+        <div class="form-group" style="width:50%;">
+          <input type="number" max="10000000000" min="0" step="1" value="{{ user.amount }}" name="amount"/>
+        </div>
+        <div class="form-group" style="width: auto;margin-left: 3px">
+          <input type="submit" value="Modifier"/>
+          <input hidden="hidden" name="user_id" value="{{ user.id }}" />
+        </div>
+      </form>
+    </td>
+
+    <td>
+      @if(user.isAdmin)
+      Administrateur
+      @elseif(user.isOwner)
+      Propriétaire
+      @else
+      Utilisateur
+      @endif
+    </td>
+    <td style="display: flex;align-items: center;justify-content: center">
+
+      @if(!user.isOwner && auth.user.isOwner)
+
+      @if (user.isAdmin)
+
+      <form method="post" action="{{ route('admin.users.unpromote') }}" style="display: flex;align-items: center;justify-content: center">
+        {{ csrfField() }}
+        <div class="form-group" style="width: auto;">
+          <input type="submit" value="Rétrograder" style="padding:3.5px"/>
+          <input hidden="hidden" name="user_id" value="{{ user.id }}" />
+        </div>
+      </form>
+      @else
+
+      <form method="post" action="{{ route('admin.users.promote') }}" style="display: flex;align-items: center;justify-content: center">
+        {{ csrfField() }}
+        <div class="form-group" style="width: auto;">
+          <input type="submit" value="Promouvoir" style="padding:3.5px"/>
+          <input hidden="hidden" name="user_id" value="{{ user.id }}" />
+        </div>
+      </form>
+      @endif
+
+      @endif
+
+      @if((!user.isOwner && !user.isAdmin) || (user.isAdmin && auth.user.isOwner))
+      <form method="post" action="{{ route('admin.users.delete') }}" style="display: flex;align-items: center;justify-content: center">
+        {{ csrfField() }}
+
+        <div class="form-group" style="width: auto; margin-left: 3px">
+          <input type="submit" class="red" value="Supprimer" style="padding:3.5px"/>
+          <input hidden="hidden" name="user_id" value="{{ user.id }}" />
+        </div>
+      </form>
+      @endif
+
+
+    </td>
+  </tr>
+  @end
+</table>
+
+<div class="right">
+  @if (page > 2)
+  <a href="{{ route('admin.users.show') }}?page=1">1</a>
+  <<
+    @endif
+  @if (page - 1 >= 1)
+  <a class="button" href="{{ route('admin.users.show') }}?page={{ page - 1 }}">{{ page - 1 }}</a>
+  @endif
+  <a class="button" href="{{ route('admin.users.show') }}?page={{ page }}">{{ page }}</a>
+  @if (page + 1 <= last)
+  <a class="button" href="{{ route('admin.users.show') }}?page={{ page + 1 }}">{{ page + 1 }}</a>
+  @endif
+  @if (page <= last - 2)
+  >>
+  <a href="{{ route('admin.users.show') }}?page={{ last }}">{{ last }}</a>
+  @endif
+</div>
+
+@end

@@ -1,0 +1,90 @@
+@layout('layouts/main')
+
+@section('body')
+    <h2>Retrait de crypto-monnaie</h2>
+
+<h3>Comment ça marche ?</h3>
+<p>Vous devez renseigner votre numéro de téléphone ainsi que la somme que vous souhaitez voir retirée de votre compte, vous recevrez ensuite un appel pour convenir d'un rendez-vous.</p>
+
+    <div class="flex" style="margin-top:40px">
+      <div class="right-separator content-left">
+        <h2 class="m-0 center">Faire une demande de dépôt</h2>
+
+        <form class="form" style="width:100%" method="post" action="{{ route('withdrawals.send') }}">
+          {{ csrfField() }}
+
+          @if(flashMessages.has('errors.phone'))
+                  <div class="form-group errored">
+                  @else
+                  <div class="form-group">
+                  @endif
+                    <label for="phone">Numéro de téléphone</label>
+                    <input id="phone" type="text" name="phone">
+                    @if(flashMessages.has('errors.phone'))
+                      <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.phone') }}</div>
+                    @endif
+                  </div>
+
+         @if(flashMessages.has('errors.amount'))
+                           <div class="form-group errored">
+                           @else
+                           <div class="form-group">
+                           @endif
+                             <label for="amount">Montant</label>
+                             <input id="amount" type="number" max="10000000000" name="amount">
+                             @if(flashMessages.has('errors.amount'))
+                               <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.amount') }}</div>
+                             @endif
+                           </div>
+          <div class="form-group right">
+            <input type="submit" value="Envoyer">
+          </div>
+        </form>
+      </div>
+      <div>
+                <h2 class="m-0 center">Historique</h2>
+         <table>
+          <tr>
+            <th>Montant</th>
+            <th>Téléphone</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+
+          @each(withdrawal in withdrawals)
+            @if (withdrawal.state == 'DONE')
+           <tr>
+             @elseif (withdrawal.state == 'PENDING')
+           <tr class="orange">
+            @else
+           <tr class="red">
+            @end
+             <td>{{ i18n.formatNumber(withdrawal.amount) }} {{ settings.symbol }}</td>
+             <td>{{ withdrawal.phone }}</td>
+             <td>{{ withdrawal.state }}</td>
+             <td>{{ i18n.formatDate(withdrawal.createdAt) }}</td>
+           </tr>
+          @end
+         </table>
+
+        <div class="right">
+          @if (page > 2)
+          <a href="{{ route('deposits.show') }}?page=1">1</a>
+          <<
+          @endif
+          @if (page - 1 >= 1)
+          <a class="button" href="{{ route('deposits.show') }}?page={{ page - 1 }}">{{ page - 1 }}</a>
+          @endif
+          <a class="button" href="{{ route('deposits.show') }}?page={{ page }}">{{ page }}</a>
+          @if (page + 1 <= last)
+          <a class="button" href="{{ route('deposits.show') }}?page={{ page + 1 }}">{{ page + 1 }}</a>
+          @endif
+          @if (page <= last - 2)
+          >>
+          <a href="{{ route('deposits.show') }}?page={{ last }}">{{ last }}</a>
+          @endif
+        </div>
+      </div>
+    </div>
+
+@end

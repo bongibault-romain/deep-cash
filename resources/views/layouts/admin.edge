@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ csrfMeta() }}
+  <title>{{ settings.name }} - {{ title }}</title>
+  @entryPointStyles('app')
+  @entryPointScripts('app')
+</head>
+<body>
+<style>
+  :root {
+    --base-color: #1abc9c;
+    --border: dashed 1px rgba(26, 188, 156, 0.9);
+    --selection-background: rgba(26, 188, 156, 0.99);
+    --selection-text: #000;
+    --background-color: #000;
+    --text-color: var(--base-color);
+    --placeholder-color: var(--base-color);
+    --link-color: var(--base-color);
+    --max-width: 1200px;
+  }
+</style>
+    <div class="container"><header>
+  <div class="menu">
+    <h1>{{ settings.name }}</h1>
+    <ul>
+      <li><a href="{{ route('admin.transactions.show') }}">/transactions</a></li>
+
+      <li><a href="{{ route('admin.users.show') }}">/utilisateurs</a></li>
+      <li><a href="{{ route('admin.histories.show') }}">/historique</a></li>
+      @if(auth.user.isOwner)
+      <li><a href="{{ route('admin.settings.show') }}">/paramètres</a></li>
+      @endif
+      <li><a href="{{ route('wallet.show') }}">/retour</a></li>
+      <li><a href="{{ route('auth.logout') }}">/déconnexion</a></li>
+    </ul>
+  </div>
+
+</header>
+    <main>
+      @!section('body')
+    </main>
+
+    <footer>
+  <a href="https://twitter.com/">82.111.109.49</a>
+</footer>
+</div>
+</body>
+</html>

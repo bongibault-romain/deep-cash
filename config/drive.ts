@@ -42,7 +42,7 @@ export default driveConfig({
     */
     local: {
       driver: 'local',
-      visibility: 'public',
+      visibility: 'private',
 
       /*
       |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ export default driveConfig({
       | storage services that has inbuilt capabilities to serve files.
       |
       */
-      serveFiles: true,
+      serveFiles: false,
 
       /*
       |--------------------------------------------------------------------------

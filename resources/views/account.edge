@@ -1,0 +1,104 @@
+@layout('layouts/main')
+
+@section('body')
+        <h1 class="m-0 center">Paramètres du compte</h1>
+
+<form class="form" method="post" action="{{ route('account.update') }}">
+{{ csrfField() }}
+
+@if(flashMessages.has('success'))
+<div class="alert alert-success">
+  <span class="title">[ Succès ]</span>
+  {{ flashMessages.get('success') }}
+</div>
+@endif
+
+@if(flashMessages.has('errors.username'))
+<div class="form-group errored">
+@else
+<div class="form-group">
+  @endif
+  <label for="username">Nom d'utilisateur</label>
+  <input id="username" type="text" name="username" value="{{ auth.user.username }}">
+  @if(flashMessages.has('errors.username'))
+  <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.username') }}</div>
+  @endif
+</div>
+
+@if(flashMessages.has('errors.password') || flashMessages.has('auth.error'))
+<div class="form-group errored">
+@else
+<div class="form-group">
+  @endif
+  <label for="password">Mot de passe <small>(facultatif)</small></label>
+  <input id="password" type="password" name="password">
+  @if(flashMessages.has('errors.password'))
+  <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.password') }}</div>
+  @elseif(flashMessages.has('auth.error'))
+  <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('auth.error') }}</div>
+  @endif
+</div>
+@if(flashMessages.has('errors.new_password'))
+<div class="form-group errored">
+@else
+<div class="form-group">
+  @endif
+  <label for="new_password">Nouveau mot de passe <small>(facultatif)</small></label>
+  <input id="new_password" type="password" name="new_password">
+  @if(flashMessages.has('errors.new_password'))
+  <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.new_password') }}</div>
+  @endif
+</div>
+
+@if(flashMessages.has('errors.new_password_confirmation'))
+<div class="form-group errored">
+@else
+<div class="form-group">
+  @endif
+  <label for="new_password_confirmation">Confirmation du mot de passe <small>(facultatif)</small></label>
+  <input id="new_password_confirmation" type="password" name="new_password_confirmation">
+  @if(flashMessages.has('errors.new_password_confirmation'))
+  <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.new_password_confirmation') }}</div>
+  @endif
+</div>
+
+<div class="form-group right" style="margin-top: 20px">
+  <input type="submit" value="Sauvegarder les modifications">
+</div>
+</form>
+
+<form class="form" method="post" action="{{ route('account.delete') }}">
+{{ csrfField() }}
+  <hr />
+
+  <div class="form-group">
+    <input type="submit" class="red" style="display: block;width: 100%;" id="delete-button" value="Supprimer mon compte" />
+  </div>
+
+</form>
+
+<script>
+
+const deleteButton = document.getElementById('delete-button')
+
+deleteButton.addEventListener('click', function(e) {
+  if (e.target.getAttribute('data-submitable') === null) {
+      e.target.value = "Êtes-vous certain de vouloir faire ça ?"
+      e.target.setAttribute('disabled', '')
+    e.target.setAttribute('data-submitable', '')
+
+    setTimeout(() => {
+      e.target.removeAttribute('disabled')
+    }, 1000)
+
+    setTimeout(() => {
+      e.target.value = "Supprimer mon compte"
+      e.target.removeAttribute('data-submitable')
+    }, 11000)
+
+    e.preventDefault()
+  }
+})
+
+</script>
+  @end

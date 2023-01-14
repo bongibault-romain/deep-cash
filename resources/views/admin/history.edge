@@ -1,0 +1,41 @@
+@layout('layouts/admin')
+
+@section('body')
+  <h1 class="center">Historique des transactions</h1>
+
+<table>
+  <tr>
+    <th>Envoyeur</th>
+    <th>Receveur</th>
+    <th>Montant</th>
+    <th>Date</th>
+  </tr>
+  @each(transaction in transactions)
+  <tr>
+    <td>{{ transaction.ownerTransferKey }}</td>
+    <td>{{ transaction.targetTransferKey }}</td>
+    <td>{{ i18n.formatNumber(transaction.amount) }} {{ settings.symbol }}</td>
+    <td>{{ i18n.formatDate(transaction.createdAt) }}</td>
+  </tr>
+  @end
+</table>
+
+
+<div class="right">
+@if (page > 2)
+<a href="{{ route('admin.histories.show') }}?page=1">1</a>
+<<
+@endif
+@if (page - 1 >= 1)
+<a class="button" href="{{ route('admin.histories.show') }}?page={{ page - 1 }}">{{ page - 1 }}</a>
+@endif
+<a class="button" href="{{ route('admin.histories.show') }}?page={{ page }}">{{ page }}</a>
+@if (page + 1 <= last)
+<a class="button" href="{{ route('admin.histories.show') }}?page={{ page + 1 }}">{{ page + 1 }}</a>
+@endif
+@if (page <= last - 2)
+>>
+<a href="{{ route('admin.histories.show') }}?page={{ last }}">{{ last }}</a>
+@endif
+</div>
+@end

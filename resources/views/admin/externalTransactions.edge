@@ -1,0 +1,160 @@
+@layout('layouts/admin')
+
+@section('body')
+    <h2>Liste des transactions</h2>
+
+  @if(flashMessages.has('error'))
+<div class="alert alert-error">
+<span class="title">[ Erreur ]</span>
+{{ flashMessages.get('error') }}
+</div>
+  @endif
+
+    <div class="flex" style="margin-top:40px">
+      <div class="right-separator content-left">
+        <h2 class="m-0 center">Demandes de dépôt</h2>
+
+        <table>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Montant</th>
+            <th>Téléphone</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+
+          @each(deposit in deposits)
+          @if (deposit.state == 'DONE')
+          <tr>
+          @elseif (deposit.state == 'PENDING')
+          <tr class="orange">
+          @else
+          <tr class="red">
+            @end
+            <td>{{ deposit.owner.username }}</td>
+            <td>{{ i18n.formatNumber(deposit.amount) }} {{ settings.symbol }}</td>
+            <td>{{ deposit.phone }}</td>
+            <td>{{ deposit.state }}</td>
+            <td>{{ i18n.formatDate(deposit.createdAt) }}</td>
+            <td class="center">
+              @if (deposit.state === 'PENDING')
+              <form method="post" action="{{ route('admin.transactions.done') }}">
+                {{ csrfField() }}
+                <input hidden="hidden" type="text" value="{{ deposit.id }}" name="transaction_id" />
+                <div class="form-group"><input type="submit" value="Accepter" /></div>
+              </form>
+              <form method="post" action="{{ route('admin.transactions.cancel') }}">
+                {{ csrfField() }}
+
+                <input hidden="hidden" type="text" value="{{ deposit.id }}" name="transaction_id" />
+                <div class="form-group"><input class="red" type="submit" value="Refuser" /></div>
+              </form>
+              @endif
+              @if (deposit.state === 'CANCELED')
+              <form method="post" action="{{ route('admin.transactions.restart') }}">
+                {{ csrfField() }}
+
+                <input hidden="hidden" type="text" value="{{ deposit.id }}" name="transaction_id" />
+                <div class="form-group"><input type="submit" value="Reprendre" /></div>
+              </form>
+              @endif
+            </td>
+          </tr>
+          @end
+        </table>
+
+        <div class="right">
+          @if (dpage > 2)
+          <a href="{{ route('admin.transactions.show') }}?dpage=1&wpage={{ wpage }}">1</a>
+          <<
+          @endif
+          @if (dpage - 1 >= 1)
+          <a class="button" href="{{ route('admin.transactions.show') }}?dpage={{ dpage - 1 }}&wpage={{ wpage }}">{{ dpage - 1 }}</a>
+          @endif
+          <a class="button" href="{{ route('admin.transactions.show') }}?dpage={{ dpage }}&wpage={{ wpage }}">{{ dpage }}</a>
+          @if (dpage + 1 <= dlast)
+          <a class="button" href="{{ route('admin.transactions.show') }}?dpage={{ dpage + 1 }}&wpage={{ wpage }}">{{ dpage + 1 }}</a>
+          @endif
+          @if (dpage <= dlast - 2)
+          >>
+          <a href="{{ route('admin.transactions.show') }}?dpage={{ dlast }}&wpage={{ wpage }}">{{ dlast }}</a>
+          @endif
+        </div>
+
+      </div>
+      <div>
+                <h2 class="m-0 center">Demandes de retrait</h2>
+         <table>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Montant</th>
+            <th>Téléphone</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+
+          @each(withdrawal in withdrawals)
+            @if (withdrawal.state == 'DONE')
+           <tr>
+             @elseif (withdrawal.state == 'PENDING')
+           <tr class="orange">
+            @else
+           <tr class="red">
+            @end
+
+             <td>{{ withdrawal.owner.username }}</td>
+             <td>{{ i18n.formatNumber(withdrawal.amount) }} {{ settings.symbol }}</td>
+             <td>{{ withdrawal.phone }}</td>
+             <td>{{ withdrawal.state }}</td>
+             <td>{{ i18n.formatDate(withdrawal.createdAt) }}</td>
+             <td class="center">
+               @if (withdrawal.state === 'PENDING')
+               <form method="post" action="{{ route('admin.transactions.done') }}">
+                 {{ csrfField() }}
+
+                 <input hidden="hidden" type="text" value="{{ withdrawal.id }}" name="transaction_id" />
+                 <div class="form-group"><input type="submit" value="Accepter" /></div>
+               </form>
+               <form method="post" action="{{ route('admin.transactions.cancel') }}">
+                 {{ csrfField() }}
+
+                 <input hidden="hidden" type="text" value="{{ withdrawal.id }}" name="transaction_id" />
+                 <div class="form-group"><input class="red" type="submit" value="Refuser" /></div>
+               </form>
+               @endif
+               @if (withdrawal.state === 'CANCELED')
+               <form method="post" action="{{ route('admin.transactions.restart') }}">
+                 {{ csrfField() }}
+
+                 <input hidden="hidden" type="text" value="{{ withdrawal.id }}" name="transaction_id" />
+                 <div class="form-group"><input type="submit" value="Reprendre" /></div>
+               </form>
+               @endif
+             </td>
+           </tr>
+          @end
+         </table>
+
+        <div class="right">
+          @if (wpage > 2)
+          <a href="{{ route('admin.transactions.show') }}?wpage=1&dpage={{ dpage }}">1</a>
+          <<
+          @endif
+          @if (wpage - 1 >= 1)
+          <a class="button" href="{{ route('admin.transactions.show') }}?wpage={{ wpage - 1 }}&dpage={{ dpage }}">{{ wpage - 1 }}</a>
+          @endif
+          <a class="button" href="{{ route('admin.transactions.show') }}?wpage={{ wpage }}&dpage={{ dpage }}">{{ wpage }}</a>
+          @if (wpage + 1 <= wlast)
+          <a class="button" href="{{ route('admin.transactions.show') }}?wpage={{ wpage + 1 }}&dpage={{ dpage }}">{{ wpage + 1 }}</a>
+          @endif
+          @if (wpage <= wlast - 2)
+          >>
+          <a href="{{ route('admin.transactions.show') }}?wpage={{ wlast }}&dpage={{ dpage }}">{{ wlast }}</a>
+          @endif
+        </div>
+      </div>
+    </div>
+
+@end

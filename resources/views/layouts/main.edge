@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ csrfMeta() }}
+  <title>{{ settings.name }} - {{ title }}</title>
+  @entryPointStyles('app')
+  @entryPointScripts('app')
+</head>
+<body>
+    <div class="container"><header>
+  <div class="menu">
+    <h1>{{ settings.name }}</h1>
+    <ul>
+    @if(auth.isAuthenticated)
+    <li><a href="{{ route('wallet.show') }}">/portefeuille</a></li>
+      <li><a href="{{ route('deposits.show') }}">/dépôt</a></li>
+      <li><a href="{{ route('withdrawals.show') }}">/retrait</a></li>
+      @if(settings.isHistoryEnabled)
+      <li><a href="{{ route('histories.show') }}">/historique</a></li>
+      @endif
+      <li><a href="{{ route('account.show') }}">/compte</a></li>
+      @if(auth.user.isAdmin || auth.user.isOwner)
+      <li><a href="{{ route('admin.users.show') }}">/admin</a></li>
+      @endif
+      <li><a href="{{ route('auth.logout') }}">/déconnexion</a></li>
+    @else
+    <li><a href="{{ route('auth.login.show') }}">/connexion</a></li>
+    <li><a href="{{ route('auth.register.show') }}">/inscription</a></li>
+    @end
+    </ul>
+  </div>
+
+  @if(auth.isAuthenticated)
+  <div class="menu-solde">
+    <h2>Solde: {{ i18n.formatNumber(auth.user.amount) }} {{ settings.symbol }}</h2>
+  </div>
+  @end
+</header>
+    <main>
+      @!section('body')
+    </main>
+
+    <footer>
+  <a href="https://twitter.com/">82.111.109.49</a>
+</footer>
+</div>
+</body>
+</html>

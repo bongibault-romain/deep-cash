@@ -1,0 +1,43 @@
+@layout('layouts/main')
+
+@section('body')
+<h1 class="center">Connexion</h1>
+
+      <form class="form" method="post" action="{{ route('auth.login.post') }}">
+        {{ csrfField() }}
+
+        @if(flashMessages.has('auth.error'))
+        <div class="alert alert-error">
+          <span class="title">[ Erreur ]</span>
+          {{ flashMessages.get('auth.error') }}
+        </div>
+        @endif
+
+        @if(flashMessages.has('errors.username') || flashMessages.has('auth.error'))
+        <div class="form-group errored">
+        @else
+        <div class="form-group">
+        @endif
+          <label for="username">Nom d'utilisateur</label>
+          <input id="username" type="text" name="username" value="{{ flashMessages.get('username') || '' }}">
+          @if(flashMessages.has('errors.username'))
+            <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.username') }}</div>
+          @endif
+        </div>
+
+        @if(flashMessages.has('errors.password') || flashMessages.has('auth.error'))
+        <div class="form-group errored">
+        @else
+        <div class="form-group">
+        @endif
+          <label for="password">Mot de passe</label>
+          <input id="password" type="password" name="password">
+          @if(flashMessages.has('errors.password'))
+            <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.password') }}</div>
+          @endif
+        </div>
+        <div class="form-group right">
+          <input type="submit" value="Envoyer">
+        </div>
+      </form>
+@end

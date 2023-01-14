@@ -1,0 +1,76 @@
+@layout('layouts/main')
+
+@section('body')
+
+    <div class="center">
+      <span class="center">Votre adresse</span>
+      <h2 style="font-size:1.5rem;margin-top:10px;padding-top:0;" class="center">
+        {{ auth.user.transferKey }}
+      </h2>
+    </div>
+
+    <div class="flex" style="margin-top:40px">
+      <div class="right-separator content-left">
+        <h2 class="m-0 center">Envoyer de l'argent</h2>
+
+        <form class="form" style="width:100%" method="post" action="{{ route('wallet.send') }}">
+          {{ csrfField() }}
+
+          @if(flashMessages.has('errors.target') || flashMessages.has('auth.error'))
+                  <div class="form-group errored">
+                  @else
+                  <div class="form-group">
+                  @endif
+                    <label for="target">Adresse cible</label>
+                    <input id="target" type="text" name="target">
+                    @if(flashMessages.has('errors.target'))
+                      <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.target') }}</div>
+                    @endif
+                  </div>
+
+         @if(flashMessages.has('errors.amount') || flashMessages.has('auth.error'))
+                           <div class="form-group errored">
+                           @else
+                           <div class="form-group">
+                           @endif
+                             <label for="amount">Montant</label>
+                             <input id="amount" type="number" max="10000000000" name="amount">
+                             @if(flashMessages.has('errors.amount'))
+                               <div class="alert alert-error mt-2"><span class="title">[ Erreur ]</span> {{ flashMessages.get('errors.amount') }}</div>
+                             @endif
+                           </div>
+          <div class="form-group right">
+            <input type="submit" value="Envoyer">
+          </div>
+        </form>
+      </div>
+      <div>
+                <h2 class="m-0 center">Historique</h2>
+         <table>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Montant</th>
+            <th>Date</th>
+          </tr>
+
+          @each(transaction in transactions)
+            @if (transaction.targetTransferKey == auth.user.transferKey)
+           <tr>
+            @else
+           <tr class="red">
+            @end
+            @if (transaction.targetTransferKey == auth.user.transferKey)
+            <td>{{ transaction.ownerTransferKey || 'Utilisateur supprimé' }}</td>
+            <td>+{{ i18n.formatNumber(transaction.amount) }} {{ settings.symbol }}</td>
+            @else
+            <td>{{ transaction.targetTransferKey || 'Utilisateur supprimé' }}</td>
+            <td>-{{ i18n.formatNumber(transaction.amount) }} {{ settings.symbol }}</td>
+            @end
+            <td>{{ i18n.formatDate(transaction.createdAt) }}</td>
+           </tr>
+          @end
+         </table>
+      </div>
+    </div>
+
+@end
