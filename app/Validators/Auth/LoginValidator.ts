@@ -1,4 +1,4 @@
-import { schema, CustomMessages, rules } from "@ioc:Adonis/Core/Validator";
+import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class LoginValidator {
@@ -45,5 +45,10 @@ export default class LoginValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'username.maxLength': "Votre nom d'utilisateur ne doit pas contenir plus de 30 caractères.",
+    'username.minLength': "Votre nom d'utilisateur doit pas contenir au moins 3 caractères.",
+    'password.maxLength': 'Votre mot de passe ne doit pas contenir plus de 30 caractères.',
+    'password.minLength': 'Votre mot de passe doit contenir au moins 8 caractères.',
+  }
 }

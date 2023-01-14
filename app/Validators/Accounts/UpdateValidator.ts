@@ -59,5 +59,16 @@ export default class UpdateValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'username.maxLength': "Votre nom d'utilisateur ne doit pas contenir plus de 30 caractères.",
+    'username.minLength': "Votre nom d'utilisateur doit pas contenir au moins 3 caractères.",
+    'username.unique': "Ce nom d'utilisateur est déjà pris.",
+    'password.maxLength': 'Votre mot de passe ne doit pas contenir plus de 30 caractères.',
+    'password.minLength': 'Votre mot de passe doit contenir au moins 8 caractères.',
+    'password.requiredIfExists': 'Vous devez renseigner votre mot de passe.',
+    'new_password.maxLength': 'Votre mot de passe ne doit pas contenir plus de 30 caractères.',
+    'new_password.minLength': 'Votre mot de passe doit contenir au moins 8 caractères.',
+    'new_password.requiredIfExists': 'Vous devez renseigner votre nouveau mot de passe.',
+    'new_password.confirmed': "Le mot de passe n'est pas identique au nouveau mot de passe.",
+  }
 }

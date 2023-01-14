@@ -43,5 +43,7 @@ export default class ExternalTransactionValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'transaction_id.exists': "Cette transaction n'existe pas ou plus.",
+  }
 }

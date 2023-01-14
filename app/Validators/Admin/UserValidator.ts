@@ -43,5 +43,7 @@ export default class UserValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'user_id.exists': "Cette utilisateur n'existe pas ou plus.",
+  }
 }

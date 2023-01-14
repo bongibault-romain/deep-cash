@@ -41,5 +41,9 @@ export default class UpdateValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'name.maxLength': 'Le nom ne doit pas contenir plus de 255 caractères.',
+    'symbol.maxLength':
+      'Le symbol de la crypto-monnaie ne doit pas contenir plus de 255 caractères.',
+  }
 }

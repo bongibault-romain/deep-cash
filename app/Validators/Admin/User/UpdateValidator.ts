@@ -38,5 +38,7 @@ export default class UpdateValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'amount.range': 'Le montant doit être compris entre 0 et 10,000,000,000.',
+  }
 }

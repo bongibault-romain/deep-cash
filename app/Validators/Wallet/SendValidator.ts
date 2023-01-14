@@ -44,5 +44,8 @@ export default class SendValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'target.exists': 'Adresse inconnue.',
+    'amount.range': 'Le montant doit être compris entre 1 et  10,000,000,000.',
+  }
 }

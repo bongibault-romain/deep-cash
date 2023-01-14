@@ -24,7 +24,7 @@ export default class ExternalTransactionValidator {
    *    ```
    */
   public schema = schema.create({
-    phone: schema.string({ escape: true, trim: true }, []),
+    phone: schema.string({ escape: true, trim: true }, [rules.maxLength(30)]),
     amount: schema.number([rules.range(1, 10000000000)]),
   })
 
@@ -39,5 +39,8 @@ export default class ExternalTransactionValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'phone.maxLength': 'Votre numéro de téléphone ne doit pas contenir plus de 30 caractères.',
+    'amount.range': 'Le montant doit être compris entre 1 et 10,000,000,000.',
+  }
 }
